@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+<style>
+  * {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  body {
+    background: radial-gradient(circle at center, #ffdde1, #ee9ca7);
+    overflow: hidden;
+    color: #fff;
+  }
+
+  .page {
+    display: none;
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 25px;
+    transition: opacity 1s ease, transform 1s ease;
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  .page.active {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  #passwordPage {
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  }
+
+  h1 {
+    font-size: 30px;
+    margin-bottom: 15px;
+  }
+
+  input {
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: 16px;
+    color: #ff5e78;
+  }
+
+  button {
+    margin-top: 15px;
+    background: #fff;
+    color: #ff5e78;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+  }
+
+  button:hover { transform: scale(1.1); }
+
+  /* MESSAGE PAGE */
+  #messagePage {
+    background: linear-gradient(120deg, #f6d365, #fda085);
+    font-family: 'Great Vibes', cursive;
+    font-size: 22px;
+    color: #fff;
+    line-height: 1.9;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+  }
+
+  #messagePage p {
+    max-width: 700px;
+    margin: 0 auto;
+    animation: fadeIn 2s ease forwards;
+  }
+
+  /* GALLERY PAGE */
+  #galleryPage {
+    background: radial-gradient(circle at center, #ffe6eb, #ffc1cc);
+    color: #333;
+  }
+
+  .record {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: #000 url('.') center/cover no-repeat;
+    margin-bottom: 20px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.4);
+    animation: spin 5s linear infinite;
+    animation-play-state: paused;
+    border: 6px solid #fff;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .slider {
+    width: 350px;
+    height: 420px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 25px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+  }
+
+  .slide {
+    display: none;
+    width: 100%; height: 100%;
+    position: absolute;
+  }
+
+  .slide.active {
+    display: block;
+    animation: fadeSlide 1s ease;
+  }
+
+  .slide img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 25px;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    font-size: 30px;
+    border-radius: 50%;
+    padding: 5px 15px;
+    cursor: pointer;
+  }
+
+  .next { right: 10px; }
+  .prev { left: 10px; }
+
+  .dots {
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .dot {
+    height: 10px; width: 10px;
+    margin: 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .dot.active { background-color: #ff5e78; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .heart {
+    position: absolute;
+    animation: floatHearts 8s ease-in-out infinite;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  @keyframes floatHearts {
+    0% { transform: translateY(100vh) scale(0.5) rotate(0deg); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-10vh) scale(1.2) rotate(360deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: PASSWORD -->
+<div id="passwordPage" class="page active">
+  <h1>ENTER PASSWORD ❤️</h1>
+  <input type="password" id="passwordInput" placeholder="Enter the secret word">
+  <button onclick="checkPassword()">Unlock 💌</button>
+</div>
+
+<!-- PAGE 2: MESSAGE -->
+<div id="messagePage" class="page">
+  <h1>My Heart’s Words 💖</h1>
+  <p>
+    From the moment I met you, the whole world seemed to pause.  
+    You’re the calm in my storm, the warmth in my cold nights, the melody to my silence.  
+    Every message, every smile, every second with you feels like a soft song that never ends.  
+    You’ve filled my world with colors, with meaning, with love.  
+    I’ll never stop being grateful that I found you — my favorite person in the universe. ❤️  
+  </p>
+  <button onclick="goToGallery()">Next ➜</button>
+</div>
+
+<!-- PAGE 3: GALLERY -->
+  <style>
+    .record {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #111 40%, #000 100%);
+      margin-bottom: 15px;
+      position: relative;
+      animation: spin 5s linear infinite;
+      animation-play-state: paused;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .record-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      position: absolute;
+      z-index: 2;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+<div id="galleryPage" class="page">
+  <div class="record">
+  <img src="album.jpg" alt="center image" class="record-image">
+</div>
+
+  <audio id="song" controls>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="slider">
+    <div class="slide active"><img src="1.jpg" alt="photo1"></div>
+    <div class="slide"><img src="2.jpg" alt="photo2"></div>
+    <div class="slide"><img src="3.jpg" alt="photo3"></div>
+    <div class="slide"><img src="4.jpg" alt="photo4"></div>
+
+    <span class="prev" onclick="changeSlide(-1)">&#10094;</span>
+    <span class="next" onclick="changeSlide(1)">&#10095;</span>
+  </div>
+
+  <div class="dots">
+    <span class="dot active" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+    <span class="dot" onclick="currentSlide(4)"></span>
+  </div>
+</div>
+
+<script>
+  // floating hearts
+  for (let i = 0; i < 25; i++) {
+    let heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (16 + Math.random() * 22) + "px";
+    heart.style.animationDuration = (6 + Math.random() * 5) + "s";
+    heart.style.opacity = 0.5 + Math.random() * 0.5;
+    document.body.appendChild(heart);
+  }
+
+  // password check with animation
+  function checkPassword() {
+    const input = document.getElementById("passwordInput").value.toLowerCase();
+    if (input === "ti amo") {
+      transitionTo("messagePage");
+    } else {
+      alert("Almost there my love… but that’s not the word I’m waiting for 💕");
+    }
+  }
+
+  function transitionTo(nextPageId) {
+    const current = document.querySelector(".page.active");
+    const next = document.getElementById(nextPageId);
+    current.classList.remove("active");
+    setTimeout(() => {
+      current.style.display = "none";
+      next.style.display = "flex";
+      setTimeout(() => next.classList.add("active"), 50);
+    }, 500);
+  }
+
+  function goToGallery() {
+    transitionTo("galleryPage");
+  }
+
+  // manual slider
+  let slideIndex = 1;
+  showSlides(slideIndex);
+
+  function changeSlide(n) { showSlides(slideIndex += n); }
+  function currentSlide(n) { showSlides(slideIndex = n); }
+
+  function showSlides(n) {
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+    if (n > slides.length) slideIndex = 1;
+    if (n < 1) slideIndex = slides.length;
+    slides.forEach(s => s.classList.remove("active"));
+    dots.forEach(d => d.classList.remove("active"));
+    slides[slideIndex - 1].classList.add("active");
+    dots[slideIndex - 1].classList.add("active");
+  }
+
+  // rotate record only when song plays
+  const song = document.getElementById("song");
+  const record = document.querySelector(".record");
+  song.addEventListener("play", () => record.style.animationPlayState = "running");
+  song.addEventListener("pause", () => record.style.animationPlayState = "paused");
+</script>
+
+</body>
+</html>
